@@ -1,0 +1,2227 @@
+{
+	"info": {
+		"_postman_id": "b1582aa5-49fd-4c20-badf-5344f2bc4405",
+		"name": "Conduit-API-tests",
+		"description": "This collection is a [QA assignment](https://github.com/hellohuman/qa-assignment?tab=readme-ov-file) containing automated tests for the Conduit API. The tests mirror functionalities tested through the UI and manual processes.\n\nCovered areas:\n\n- Sign Up of a new user;\n    \n- Log In;\n    \n- Create an article;\n    \n- Navigation to the articles and feed was replaced by GET Articles.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6258617"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "POST /user validation tests",
+					"item": [
+						{
+							"name": "Register new user: 422 email missing",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(' Status code is 422', () => {",
+											"    pm.response.to.have.status(422);",
+											"})",
+											"",
+											"pm.test('Response is JSON object', () => {",
+											"     pm.expect(pm.response.json()).to.be.an('object')",
+											"})",
+											"",
+											"pm.test('Response contains errors property', () => {",
+											"    pm.expect(pm.response.json()).to.have.property('errors')",
+											"})",
+											"",
+											"pm.test(`Response contains error: email cant be blank`, () => {",
+											"    pm.expect(pm.response.json().errors).to.have.property(\"email\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const user = {",
+											"    \"email\": `APItestEmail+${Date.now()}@test.test`,",
+											"    \"password\": `APItestPassword${Date.now()}`,",
+											"    \"username\": `APItestUsername+${Date.now()}`,",
+											"};",
+											"",
+											"pm.globals.set(\"NewUserForTestEmail\", \"\");",
+											"pm.globals.set(\"NewUserPassword\", user.password);",
+											"pm.globals.set(\"NewUsername\",user.username);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "X-Requested-With",
+										"value": "XMLHttpRequest"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"user\": {\n        \"email\": \"{{NewUserForTestEmail}}\",\n        \"password\": \"{{NewUserPassword}}\",\n        \"username\": \"{{NewUsername}}\"\n    }\n}"
+								},
+								"url": {
+									"raw": "{{apiURL}}/users",
+									"host": [
+										"{{apiURL}}"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Register new user: 422 password missing",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(' Status code is 422', () => {",
+											"    pm.response.to.have.status(422);",
+											"})",
+											"",
+											"pm.test('Response is JSON object', () => {",
+											"     pm.expect(pm.response.json()).to.be.an('object')",
+											"})",
+											"",
+											"pm.test('Response contains errors property', () => {",
+											"    pm.expect(pm.response.json()).to.have.property('errors')",
+											"})",
+											"",
+											"pm.test(`Response contains error: password can't be blank`, () => {",
+											"    pm.expect(pm.response.json().errors).to.have.property(\"password\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const user = {",
+											"    \"email\": `APItestEmail+${Date.now()}@test.test`,",
+											"    \"password\": `APItestPassword${Date.now()}`,",
+											"    \"username\": `APItestUsername+${Date.now()}`,",
+											"};",
+											"",
+											"pm.globals.set(\"NewUserForTestEmail\", user.email);",
+											"pm.globals.set(\"NewUserPassword\", \"\");",
+											"pm.globals.set(\"NewUsername\",user.username);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "X-Requested-With",
+										"value": "XMLHttpRequest"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"user\": {\n        \"email\": \"{{NewUserForTestEmail}}\",\n        \"password\": \"{{NewUserPassword}}\",\n        \"username\": \"{{NewUsername}}\"\n    }\n}"
+								},
+								"url": {
+									"raw": "{{apiURL}}/users",
+									"host": [
+										"{{apiURL}}"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Register new user: 422 username missing",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(' Status code is 422', () => {",
+											"    pm.response.to.have.status(422);",
+											"})",
+											"",
+											"pm.test('Response is JSON object', () => {",
+											"     pm.expect(pm.response.json()).to.be.an('object')",
+											"})",
+											"",
+											"pm.test('Response contains errors property', () => {",
+											"    pm.expect(pm.response.json()).to.have.property('errors')",
+											"})",
+											"",
+											"pm.test(`Response contains error: username can't be blank`, () => {",
+											"    pm.expect(pm.response.json().errors).to.have.property(\"password\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const user = {",
+											"    \"email\": `APItestEmail+${Date.now()}@test.test`,",
+											"    \"password\": `APItestPassword${Date.now()}`,",
+											"    \"username\": `APItestUsername+${Date.now()}`,",
+											"};",
+											"",
+											"pm.globals.set(\"NewUserForTestEmail\", user.email);",
+											"pm.globals.set(\"NewUserPassword\", \"\");",
+											"pm.globals.set(\"NewUsername\",user.username);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "X-Requested-With",
+										"value": "XMLHttpRequest"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"user\": {\n        \"email\": \"{{NewUserForTestEmail}}\",\n        \"password\": \"{{NewUserPassword}}\",\n        \"username\": \"{{NewUsername}}\"\n    }\n}"
+								},
+								"url": {
+									"raw": "{{apiURL}}/users",
+									"host": [
+										"{{apiURL}}"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Register new user: 422  email already taken",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(' Status code is 422', () => {",
+											"    pm.response.to.have.status(422);",
+											"})",
+											"",
+											"pm.test('Response is JSON object', () => {",
+											"     pm.expect(pm.response.json()).to.be.an('object')",
+											"})",
+											"",
+											"pm.test('Response contains errors property', () => {",
+											"    pm.expect(pm.response.json()).to.have.property('errors')",
+											"})",
+											"",
+											"pm.test(`Response contains error: email cant be blank`, () => {",
+											"    pm.expect(pm.response.json().errors).to.have.property(\"email\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const user = {",
+											"    \"email\": `APItestEmail+${Date.now()}@test.test`,",
+											"    \"password\": `APItestPassword${Date.now()}`,",
+											"    \"username\": `APItestUsername.${Date.now()}`,",
+											"};",
+											"",
+											"pm.globals.set(\"NewUserPassword\", user.password);",
+											"pm.globals.set(\"NewUsername\",`user${Date.now()}`);",
+											"",
+											"const RegisterNewUserIfNeeded = {",
+											"  url: 'https://api.realworld.io/api/users',",
+											"  method: 'POST',",
+											"  header: {",
+											"    'Content-Type': 'application/json',",
+											"  },",
+											"  body: {",
+											"    mode: 'raw',",
+											"    raw: JSON.stringify({user})",
+											"    }",
+											"};",
+											"",
+											"pm.sendRequest(RegisterNewUserIfNeeded, function (err, response) {",
+											"    pm.globals.set(\"NewUserForTestEmail\", user.email);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "X-Requested-With",
+										"value": "XMLHttpRequest"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"user\": {\n        \"email\": \"{{NewUserForTestEmail}}\",\n        \"password\": \"{{NewUserPassword}}\",\n        \"username\": \"{{NewUsername}}\"\n    }\n}"
+								},
+								"url": {
+									"raw": "{{apiURL}}/users",
+									"host": [
+										"{{apiURL}}"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Register new user: 422 username already taken",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(' Status code is 422', () => {",
+											"    pm.response.to.have.status(422);",
+											"})",
+											"",
+											"pm.test('Response is JSON object', () => {",
+											"     pm.expect(pm.response.json()).to.be.an('object')",
+											"})",
+											"",
+											"pm.test('Response contains errors property', () => {",
+											"    pm.expect(pm.response.json()).to.have.property('errors')",
+											"})",
+											"",
+											"pm.test(`Response contains error: username cant be blank`, () => {",
+											"    pm.expect(pm.response.json().errors).to.have.property(\"username\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const user = {",
+											"    \"email\": `APItestEmail+${Date.now()}@test.test`,",
+											"    \"password\": `APItestPassword${Date.now()}`,",
+											"    \"username\": `APItestUsername.${Date.now()}`,",
+											"};",
+											"",
+											"pm.globals.set(\"NewUserPassword\", user.password);",
+											"pm.globals.set(\"NewUserForTestEmail\", `${Date.now()}`);",
+											"",
+											"const RegisterNewUserIfNeeded = {",
+											"  url: 'https://api.realworld.io/api/users',",
+											"  method: 'POST',",
+											"  header: {",
+											"    'Content-Type': 'application/json',",
+											"  },",
+											"  body: {",
+											"    mode: 'raw',",
+											"    raw: JSON.stringify({user})",
+											"    }",
+											"};",
+											"",
+											"pm.sendRequest(RegisterNewUserIfNeeded, function (err, response) {",
+											"    pm.globals.set(\"NewUsername\", user.username);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "X-Requested-With",
+										"value": "XMLHttpRequest"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"user\": {\n        \"email\": \"{{NewUserForTestEmail}}\",\n        \"password\": \"{{NewUserPassword}}\",\n        \"username\": \"{{NewUsername}}\"\n    }\n}"
+								},
+								"url": {
+									"raw": "{{apiURL}}/users",
+									"host": [
+										"{{apiURL}}"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "POST /user/login validation tests",
+					"item": [
+						{
+							"name": "Login:  403 email is invalid",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const user = {",
+											"    \"email\": `APItestEmail+${Date.now()}@test.test`,",
+											"    \"password\": `APItestPassword${Date.now()}`,",
+											"    \"username\": `{APItestUsername+${Date.now()}`,",
+											"};",
+											"",
+											"pm.globals.set(\"NewUserForTestEmail\", user.email);",
+											"pm.globals.set(\"NewUserPassword\", user.password);",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(' Status code is 403', () => {",
+											"    pm.response.to.have.status(403);",
+											"})",
+											"",
+											"pm.test('Response is JSON object', () => {",
+											"     pm.expect(pm.response.json()).to.be.an('object')",
+											"})",
+											"",
+											"pm.test('Response contains errors property', () => {",
+											"    pm.expect(pm.response.json()).to.have.property('errors')",
+											"})",
+											"",
+											"pm.test(`Response contains error description`, () => {",
+											"    pm.expect(pm.response.json().errors).to.have.property(\"email or password\");",
+											"    pm.expect(pm.response.json().errors[\"email or password\"][0]).to.equal(\"is invalid\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "X-Requested-With",
+										"value": "XMLHttpRequest"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"user\": {\n        \"email\": \"{{NewUserForTestEmail}}\",\n        \"password\": \"{{NewUserPassword}}\"\n    }\n}"
+								},
+								"url": {
+									"raw": "https://api.realworld.io/api/users/login",
+									"protocol": "https",
+									"host": [
+										"api",
+										"realworld",
+										"io"
+									],
+									"path": [
+										"api",
+										"users",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login:  403 password is invalid",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const user = {",
+											"    \"email\": `APItestEmail+${Date.now()}@test.test`,",
+											"    \"password\": `APItestPassword${Date.now()}`,",
+											"    \"username\": `{APItestUsername+${Date.now()}`,",
+											"};",
+											"",
+											"const RegisterNewUserIfNeeded = {",
+											"  url: 'https://api.realworld.io/api/users',",
+											"  method: 'POST',",
+											"  header: {",
+											"    'Content-Type': 'application/json',",
+											"  },",
+											"  body: {",
+											"    mode: 'raw',",
+											"    raw: JSON.stringify({user})",
+											"    }",
+											"};",
+											"",
+											"pm.sendRequest(RegisterNewUserIfNeeded, function (err, response) {",
+											"    ",
+											"    pm.globals.set(\"NewUserForTestEmail\", user.email);",
+											"    pm.globals.set(\"NewUserPassword\", \"test\");",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(' Status code is 403', () => {",
+											"    pm.response.to.have.status(403);",
+											"})",
+											"",
+											"pm.test('Response is JSON object', () => {",
+											"     pm.expect(pm.response.json()).to.be.an('object')",
+											"})",
+											"",
+											"pm.test('Response contains errors property', () => {",
+											"    pm.expect(pm.response.json()).to.have.property('errors')",
+											"})",
+											"",
+											"pm.test(`Response contains error description`, () => {",
+											"    pm.expect(pm.response.json().errors).to.have.property(\"email or password\");",
+											"    pm.expect(pm.response.json().errors[\"email or password\"][0]).to.equal(\"is invalid\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "X-Requested-With",
+										"value": "XMLHttpRequest"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"user\": {\n        \"email\": \"{{NewUserForTestEmail}}\",\n        \"password\": \"{{NewUserPassword}}\"\n    }\n}"
+								},
+								"url": {
+									"raw": "https://api.realworld.io/api/users/login",
+									"protocol": "https",
+									"host": [
+										"api",
+										"realworld",
+										"io"
+									],
+									"path": [
+										"api",
+										"users",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login: 422 missing password",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const user = {",
+											"    \"email\": `APItestEmail+${Date.now()}@test.test`,",
+											"    \"password\": `APItestPassword${Date.now()}`,",
+											"    \"username\": `{APItestUsername+${Date.now()}`,",
+											"};",
+											"",
+											"const RegisterNewUserIfNeeded = {",
+											"  url: 'https://api.realworld.io/api/users',",
+											"  method: 'POST',",
+											"  header: {",
+											"    'Content-Type': 'application/json',",
+											"  },",
+											"  body: {",
+											"    mode: 'raw',",
+											"    raw: JSON.stringify({user})",
+											"    }",
+											"};",
+											"",
+											"pm.sendRequest(RegisterNewUserIfNeeded, function (err, response) {",
+											"    //const NewUserResponse = response.json();",
+											"    pm.globals.set(\"NewUserForTestEmail\", user.email);",
+											"    pm.globals.set(\"NewUserPassword\", \"\");",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(' Status code is 422', () => {",
+											"    pm.response.to.have.status(422);",
+											"})",
+											"",
+											"pm.test('Response is JSON object', () => {",
+											"     pm.expect(pm.response.json()).to.be.an('object')",
+											"})",
+											"",
+											"pm.test('Response contains errors property', () => {",
+											"    pm.expect(pm.response.json()).to.have.property('errors')",
+											"})",
+											"",
+											"pm.test(`Response contains error description`, () => {",
+											"    pm.expect(pm.response.json().errors).to.have.property(\"password\");",
+											"    pm.expect(pm.response.json().errors.password[0]).to.equal(\"can't be blank\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "X-Requested-With",
+										"value": "XMLHttpRequest"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"user\": {\n        \"email\": \"{{NewUserForTestEmail}}\",\n        \"password\": \"{{NewUserPassword}}\"\n    }\n}"
+								},
+								"url": {
+									"raw": "https://api.realworld.io/api/users/login",
+									"protocol": "https",
+									"host": [
+										"api",
+										"realworld",
+										"io"
+									],
+									"path": [
+										"api",
+										"users",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login: 422 missing email",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const user = {",
+											"    \"email\": `APItestEmail+${Date.now()}@test.test`,",
+											"    \"password\": `APItestPassword${Date.now()}`,",
+											"    \"username\": `{APItestUsername+${Date.now()}`,",
+											"};",
+											"",
+											"const RegisterNewUserIfNeeded = {",
+											"  url: 'https://api.realworld.io/api/users',",
+											"  method: 'POST',",
+											"  header: {",
+											"    'Content-Type': 'application/json',",
+											"  },",
+											"  body: {",
+											"    mode: 'raw',",
+											"    raw: JSON.stringify({user})",
+											"    }",
+											"};",
+											"",
+											"pm.sendRequest(RegisterNewUserIfNeeded, function (err, response) {",
+											"    ",
+											"    pm.globals.set(\"NewUserForTestEmail\", \"\");",
+											"    pm.globals.set(\"NewUserPassword\", user.password);",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(' Status code is 422', () => {",
+											"    pm.response.to.have.status(422);",
+											"})",
+											"",
+											"pm.test('Response is JSON object', () => {",
+											"     pm.expect(pm.response.json()).to.be.an('object')",
+											"})",
+											"",
+											"pm.test('Response contains errors property', () => {",
+											"    pm.expect(pm.response.json()).to.have.property('errors')",
+											"})",
+											"",
+											"pm.test(`Response contains error description`, () => {",
+											"    pm.expect(pm.response.json().errors).to.have.property(\"email\");",
+											"    pm.expect(pm.response.json().errors.email[0]).to.equal(\"can't be blank\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "X-Requested-With",
+										"value": "XMLHttpRequest"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"user\": {\n        \"email\": \"{{NewUserForTestEmail}}\",\n        \"password\": \"{{NewUserPassword}}\"\n    }\n}"
+								},
+								"url": {
+									"raw": "https://api.realworld.io/api/users/login",
+									"protocol": "https",
+									"host": [
+										"api",
+										"realworld",
+										"io"
+									],
+									"path": [
+										"api",
+										"users",
+										"login"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Register new user: 201 successful",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(' Status code is 201', () => {",
+									"    pm.response.to.have.status(201);",
+									"})",
+									"",
+									"pm.test('Response is JSON object', () => {",
+									"     pm.expect(pm.response.json()).to.be.an('object')",
+									"})",
+									"",
+									"pm.test('Response contains user property', () => {",
+									"    pm.expect(pm.response.json()).to.have.property('user')",
+									"})",
+									"",
+									"pm.test('Response contains id inside user property', () => {",
+									"    pm.expect(pm.response.json().user).to.have.property('id')",
+									"})",
+									"",
+									"pm.test('Response contains email inside user property', () => {",
+									"    pm.expect(pm.response.json().user).to.have.property('email')",
+									"})",
+									"pm.test('Response contains token inside user property', () => {",
+									"    pm.expect(pm.response.json().user).to.have.property('token')",
+									"})",
+									"",
+									"pm.test('Response contains username inside user property', () => {",
+									"    pm.expect(pm.response.json().user).to.have.property('username')",
+									"})",
+									"",
+									"pm.test('Response contains bio inside user property', () => {",
+									"    pm.expect(pm.response.json().user).to.have.property('bio')",
+									"})",
+									"",
+									"pm.test('Response contains image inside user property', () => {",
+									"    pm.expect(pm.response.json().user).to.have.property('image')",
+									"})",
+									"",
+									"pm.test('The user returned by BE is the one who registered', () => {",
+									"    pm.expect(pm.response.json().user.email).to.eql(pm.globals.get(\"NewUserForTestEmail\"))",
+									"",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const user = {",
+									"    \"email\": `APItestEmail+${Date.now()}@test.test`,",
+									"    \"password\": `APItestPassword${Date.now()}`,",
+									"    \"username\": `APItestUsername+${Date.now()}`,",
+									"};",
+									"",
+									"pm.globals.set(\"NewUserForTestEmail\", user.email);",
+									"pm.globals.set(\"NewUserPassword\", user.password);",
+									"pm.globals.set(\"NewUsername\",user.username);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"user\": {\n        \"email\": \"{{NewUserForTestEmail}}\",\n        \"password\": \"{{NewUserPassword}}\",\n        \"username\": \"{{NewUsername}}\"\n    }\n}"
+						},
+						"url": {
+							"raw": "{{apiURL}}/users",
+							"host": [
+								"{{apiURL}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login: 200 successful",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const user = {",
+									"    \"email\": `APItestEmail+${Date.now()}@test.test`,",
+									"    \"password\": `APItestPassword${Date.now()}`,",
+									"    \"username\": `{APItestUsername+${Date.now()}`,",
+									"};",
+									"",
+									"const RegisterNewUserIfNeeded = {",
+									"  url: 'https://api.realworld.io/api/users',",
+									"  method: 'POST',",
+									"  header: {",
+									"    'Content-Type': 'application/json',",
+									"  },",
+									"  body: {",
+									"    mode: 'raw',",
+									"    raw: JSON.stringify({user})",
+									"    }",
+									"};",
+									"",
+									"pm.sendRequest(RegisterNewUserIfNeeded, function (err, response) {",
+									"    //const NewUserResponse = response.json();",
+									"    pm.globals.set(\"NewUserForTestEmail\", user.email);",
+									"    pm.globals.set(\"NewUserPassword\", user.password);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(' Status code is 200 OK', () => {",
+									"    pm.response.to.have.status(200);",
+									"})",
+									"",
+									"pm.test('Response is JSON object', () => {",
+									"     pm.expect(pm.response.json()).to.be.an('object')",
+									"})",
+									"",
+									"pm.test('Response contains user property', () => {",
+									"    pm.expect(pm.response.json()).to.have.property('user')",
+									"})",
+									"",
+									"pm.test('Response contains email inside user property', () => {",
+									"    pm.expect(pm.response.json().user).to.have.property('email')",
+									"})",
+									"pm.test('Response contains token inside user property', () => {",
+									"    pm.expect(pm.response.json().user).to.have.property('token')",
+									"})",
+									"",
+									"pm.test('Response contains username inside user property', () => {",
+									"    pm.expect(pm.response.json().user).to.have.property('username')",
+									"})",
+									"",
+									"pm.test('Response contains bio inside user property', () => {",
+									"    pm.expect(pm.response.json().user).to.have.property('bio')",
+									"})",
+									"",
+									"pm.test('Response contains image inside user property', () => {",
+									"    pm.expect(pm.response.json().user).to.have.property('image')",
+									"})",
+									"",
+									"pm.test('The user returned by BE is the one who was trying to log in', () => {",
+									"    pm.expect(pm.response.json().user.email).to.eql(pm.globals.get(\"NewUserForTestEmail\"))",
+									"",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"user\": {\n        \"email\": \"{{NewUserForTestEmail}}\",\n        \"password\": \"{{NewUserPassword}}\"\n    }\n}"
+						},
+						"url": {
+							"raw": "https://api.realworld.io/api/users/login",
+							"protocol": "https",
+							"host": [
+								"api",
+								"realworld",
+								"io"
+							],
+							"path": [
+								"api",
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Articles",
+			"item": [
+				{
+					"name": "POST /article",
+					"item": [
+						{
+							"name": "POST /articles - validation",
+							"item": [
+								{
+									"name": "Create an article: 422 missing title",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(' Status code is 422', () => {",
+													"    pm.response.to.have.status(422);",
+													"});",
+													"",
+													"pm.test('Response is JSON object', () => {",
+													"     pm.expect(pm.response.json()).to.be.an('object')",
+													"});",
+													"",
+													"pm.test('Response contains errors property', () => {",
+													"    pm.expect(pm.response.json()).to.have.property('errors')",
+													"});",
+													"",
+													"pm.test(`Response contains error description`, () => {",
+													"    pm.expect(pm.response.json().errors).to.have.property(\"title\");",
+													"    pm.expect(pm.response.json().errors.title[0]).to.equal(`can't be blank`);",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"const user = {",
+													"    \"email\": `APItestEmail+${Date.now()}@test.test`,",
+													"    \"password\": `APItestPassword${Date.now()}`,",
+													"    \"username\": `APItestUsername+${Date.now()}`,",
+													"};",
+													"",
+													"const RegisterNewUserIfNeeded = {",
+													"  url: 'https://api.realworld.io/api/users',",
+													"  method: 'POST',",
+													"  header: {",
+													"    'Content-Type': 'application/json',",
+													"  },",
+													"  body: {",
+													"    mode: 'raw',",
+													"    raw: JSON.stringify({user})",
+													"    }",
+													"};",
+													"",
+													"pm.sendRequest(RegisterNewUserIfNeeded, function (err, response) {",
+													"    pm.collectionVariables.set(\"AuthToken\", response.json().user.token)",
+													"});",
+													"",
+													"const article = {",
+													"    \"title\": \"Fossil Find Your Way to Love: Dino Talk for Dates\",",
+													"    \"description\": \"Dinosaurs a turn-off? Not a chance! Dazzle your date with these prehistoric conversation starters\",",
+													"    \"body\": \"**Did you know the T-Rex's arms were tiny?** (Fun fact + opens the door for dino discussion) **What's your favorite dinosaur movie?** (Playful & reveals shared interests) **I imagine velociraptors were surprisingly clever...** (Shows curiosity &sparks debate)\",",
+													"    \"tags\": 'dino'",
+													"}",
+													"pm.variables.set('ArticleTitle',\"\");",
+													"pm.variables.set('ArticleDescription', article.description);",
+													"pm.variables.set('ArticleBody', article.body);",
+													"pm.variables.set('ArticleTags', article.tags);",
+													"",
+													"",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "X-Requested-With",
+												"value": "XMLHttpRequest"
+											},
+											{
+												"key": "Authorization",
+												"value": "Token {{AuthToken}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"article\": {\n        \"title\": \"{{ArticleTitle}}\",\n        \"description\": \"{{ArticleDescription}}\",\n        \"body\": \"{{ArticleBody}}\",\n        \"tagList\": [\"{{ArticleTags}}\"]\n    }\n}"
+										},
+										"url": {
+											"raw": "{{apiURL}}/articles",
+											"host": [
+												"{{apiURL}}"
+											],
+											"path": [
+												"articles"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Create an Article: 422 missing description",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(' Status code is 422', () => {",
+													"    pm.response.to.have.status(422);",
+													"});",
+													"",
+													"pm.test('Response is JSON object', () => {",
+													"     pm.expect(pm.response.json()).to.be.an('object')",
+													"});",
+													"",
+													"pm.test('Response contains errors property', () => {",
+													"    pm.expect(pm.response.json()).to.have.property('errors')",
+													"});",
+													"",
+													"pm.test(`Response contains error description`, () => {",
+													"    pm.expect(pm.response.json().errors).to.have.property(\"description\");",
+													"    pm.expect(pm.response.json().errors.description[0]).to.equal(`can't be blank`);",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"const user = {",
+													"    \"email\": `APItestEmail+${Date.now()}@test.test`,",
+													"    \"password\": `APItestPassword${Date.now()}`,",
+													"    \"username\": `APItestUsername+${Date.now()}`,",
+													"};",
+													"",
+													"const RegisterNewUserIfNeeded = {",
+													"  url: 'https://api.realworld.io/api/users',",
+													"  method: 'POST',",
+													"  header: {",
+													"    'Content-Type': 'application/json',",
+													"  },",
+													"  body: {",
+													"    mode: 'raw',",
+													"    raw: JSON.stringify({user})",
+													"    }",
+													"};",
+													"",
+													"pm.sendRequest(RegisterNewUserIfNeeded, function (err, response) { ",
+													"    pm.collectionVariables.set(\"AuthToken\", response.json().user.token)",
+													"});",
+													"",
+													"const article = {",
+													"    \"title\": \"Fossil Find Your Way to Love: Dino Talk for Dates\",",
+													"    \"description\": \"Dinosaurs a turn-off? Not a chance! Dazzle your date with these prehistoric conversation starters\",",
+													"    \"body\": \"**Did you know the T-Rex's arms were tiny?** (Fun fact + opens the door for dino discussion) **What's your favorite dinosaur movie?** (Playful & reveals shared interests) **I imagine velociraptors were surprisingly clever...** (Shows curiosity &sparks debate)\",",
+													"    \"tags\": 'dino'",
+													"}",
+													"    pm.variables.set('ArticleTitle',article.title);",
+													"    pm.variables.set('ArticleDescription', \"\");",
+													"    pm.variables.set('ArticleBody', article.body);",
+													"    pm.variables.set('ArticleTags', article.tags);",
+													"",
+													"",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "X-Requested-With",
+												"value": "XMLHttpRequest"
+											},
+											{
+												"key": "Authorization",
+												"value": "Token {{AuthToken}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"article\": {\n        \"title\": \"{{ArticleTitle}}\",\n        \"description\": \"{{ArticleDescription}}\",\n        \"body\": \"{{ArticleBody}}\",\n        \"tagList\": [\"{{ArticleTags}}\"]\n    }\n}"
+										},
+										"url": {
+											"raw": "{{apiURL}}/articles",
+											"host": [
+												"{{apiURL}}"
+											],
+											"path": [
+												"articles"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Create an Article: 422 missing body",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(' Status code is 422', () => {",
+													"    pm.response.to.have.status(422);",
+													"});",
+													"",
+													"pm.test('Response is JSON object', () => {",
+													"     pm.expect(pm.response.json()).to.be.an('object')",
+													"});",
+													"",
+													"pm.test('Response contains errors property', () => {",
+													"    pm.expect(pm.response.json()).to.have.property('errors')",
+													"});",
+													"",
+													"pm.test(`Response contains error description`, () => {",
+													"    pm.expect(pm.response.json().errors).to.have.property(\"body\");",
+													"    pm.expect(pm.response.json().errors.body[0]).to.equal(`can't be blank`);",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"// create a new user ",
+													"const user = {",
+													"    \"email\": `APItestEmail+${Date.now()}@test.test`,",
+													"    \"password\": `APItestPassword${Date.now()}`,",
+													"    \"username\": `APItestUsername+${Date.now()}`,",
+													"};",
+													"",
+													"const RegisterNewUserIfNeeded = {",
+													"  url: 'https://api.realworld.io/api/users',",
+													"  method: 'POST',",
+													"  header: {",
+													"    'Content-Type': 'application/json',",
+													"  },",
+													"  body: {",
+													"    mode: 'raw',",
+													"    raw: JSON.stringify({user})",
+													"    }",
+													"};",
+													"",
+													"pm.sendRequest(RegisterNewUserIfNeeded, function (err, response) { ",
+													"     pm.collectionVariables.set(\"AuthToken\", response.json().user.token)",
+													"});",
+													"// data for article",
+													"const article = {",
+													"    \"title\": \"Fossil Find Your Way to Love: Dino Talk for Dates\",",
+													"    \"description\": \"Dinosaurs a turn-off? Not a chance! Dazzle your date with these prehistoric conversation starters\",",
+													"    \"body\": \"**Did you know the T-Rex's arms were tiny?** (Fun fact + opens the door for dino discussion) **What's your favorite dinosaur movie?** (Playful & reveals shared interests) **I imagine velociraptors were surprisingly clever...** (Shows curiosity &sparks debate)\",",
+													"    \"tags\": 'dino'",
+													"}",
+													"    pm.variables.set('ArticleTitle',article.title);",
+													"    pm.variables.set('ArticleDescription', article.description);",
+													"    pm.variables.set('ArticleBody', \"\");",
+													"    pm.variables.set('ArticleTags', article.tags);",
+													"",
+													"",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "X-Requested-With",
+												"value": "XMLHttpRequest"
+											},
+											{
+												"key": "Authorization",
+												"value": "Token {{AuthToken}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"article\": {\n        \"title\": \"{{ArticleTitle}}\",\n        \"description\": \"{{ArticleDescription}}\",\n        \"body\": \"{{ArticleBody}}\",\n        \"tagList\": [\"{{ArticleTags}}\"]\n    }\n}"
+										},
+										"url": {
+											"raw": "{{apiURL}}/articles",
+											"host": [
+												"{{apiURL}}"
+											],
+											"path": [
+												"articles"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Create an Article: 201 missing tags",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(' Status code is 201', () => {",
+													"    pm.response.to.have.status(201);",
+													"})",
+													"",
+													"pm.test('Response is JSON object', () => {",
+													"     pm.expect(pm.response.json()).to.be.an('object')",
+													"})",
+													"",
+													"pm.test('Response contains article properties', () => {",
+													"",
+													"    pm.expect(pm.response.json()).to.have.property('article');",
+													"    pm.expect(pm.response.json().article).to.have.property('slug');",
+													"    pm.expect(pm.response.json().article).to.have.property('title');",
+													"    pm.expect(pm.response.json().article).to.have.property('description');",
+													"    pm.expect(pm.response.json().article).to.have.property('body');",
+													"    pm.expect(pm.response.json().article).to.have.property('tagList');",
+													"    pm.expect(pm.response.json().article).to.have.property('createdAt');",
+													"    pm.expect(pm.response.json().article).to.have.property('updatedAt');",
+													"    pm.expect(pm.response.json().article).to.have.property('author');",
+													"    pm.expect(pm.response.json().article.author).to.have.property('username');",
+													"    pm.expect(pm.response.json().article.author).to.have.property('bio');",
+													"    pm.expect(pm.response.json().article.author).to.have.property('image');",
+													"    pm.expect(pm.response.json().article.author).to.have.property('following');",
+													"",
+													"})",
+													"",
+													"pm.test('The article returned by BE is the same was sent to create', () => {",
+													"",
+													"    pm.expect(pm.response.json().article.title).to.eql(pm.variables.get(\"ArticleTitle\"));",
+													"    pm.expect(pm.response.json().article.body).to.eql(pm.variables.get(\"ArticleBody\"));",
+													"    ",
+													"})",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"// create a new user ",
+													"const user = {",
+													"    \"email\": `APItestEmail+${Date.now()}@test.test`,",
+													"    \"password\": `APItestPassword${Date.now()}`,",
+													"    \"username\": `APItestUsername+${Date.now()}`,",
+													"};",
+													"",
+													"const RegisterNewUserIfNeeded = {",
+													"  url: 'https://api.realworld.io/api/users',",
+													"  method: 'POST',",
+													"  header: {",
+													"    'Content-Type': 'application/json',",
+													"  },",
+													"  body: {",
+													"    mode: 'raw',",
+													"    raw: JSON.stringify({user})",
+													"    }",
+													"};",
+													"",
+													"pm.sendRequest(RegisterNewUserIfNeeded, function (err, response) { ",
+													"     pm.collectionVariables.set(\"AuthToken\", response.json().user.token)",
+													"});",
+													"// data for article",
+													"const article = {",
+													"    \"title\": \"Fossil Find Your Way to Love: Dino Talk for Dates\",",
+													"    \"description\": \"Dinosaurs a turn-off? Not a chance! Dazzle your date with these prehistoric conversation starters\",",
+													"    \"body\": \"**Did you know the T-Rex's arms were tiny?** (Fun fact + opens the door for dino discussion) **What's your favorite dinosaur movie?** (Playful & reveals shared interests) **I imagine velociraptors were surprisingly clever...** (Shows curiosity &sparks debate)\",",
+													"    \"tags\": 'dino'",
+													"}",
+													"    pm.variables.set('ArticleTitle',article.title);",
+													"    pm.variables.set('ArticleDescription', article.description);",
+													"    pm.variables.set('ArticleBody', article.body);",
+													"    pm.variables.set('ArticleTags', \"\");",
+													"",
+													"",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "X-Requested-With",
+												"value": "XMLHttpRequest"
+											},
+											{
+												"key": "Authorization",
+												"value": "Token {{AuthToken}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"article\": {\n        \"title\": \"{{ArticleTitle}}\",\n        \"description\": \"{{ArticleDescription}}\",\n        \"body\": \"{{ArticleBody}}\",\n        \"tagList\": [\"{{ArticleTags}}\"]\n    }\n}"
+										},
+										"url": {
+											"raw": "{{apiURL}}/articles",
+											"host": [
+												"{{apiURL}}"
+											],
+											"path": [
+												"articles"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Duplicated tags merged into one",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(' Status code is 201', () => {",
+													"    pm.response.to.have.status(201);",
+													"})",
+													"",
+													"pm.test('Response is JSON object', () => {",
+													"     pm.expect(pm.response.json()).to.be.an('object')",
+													"})",
+													"",
+													"pm.test('Response contains article properties', () => {",
+													"",
+													"    pm.expect(pm.response.json()).to.have.property('article');",
+													"    pm.expect(pm.response.json().article).to.have.property('slug');",
+													"    pm.expect(pm.response.json().article).to.have.property('title');",
+													"    pm.expect(pm.response.json().article).to.have.property('description');",
+													"    pm.expect(pm.response.json().article).to.have.property('body');",
+													"    pm.expect(pm.response.json().article).to.have.property('tagList');",
+													"    pm.expect(pm.response.json().article).to.have.property('createdAt');",
+													"    pm.expect(pm.response.json().article).to.have.property('updatedAt');",
+													"    pm.expect(pm.response.json().article).to.have.property('author');",
+													"    pm.expect(pm.response.json().article.author).to.have.property('username');",
+													"    pm.expect(pm.response.json().article.author).to.have.property('bio');",
+													"    pm.expect(pm.response.json().article.author).to.have.property('image');",
+													"    pm.expect(pm.response.json().article.author).to.have.property('following');",
+													"",
+													"})",
+													"",
+													"pm.test('The article returned by BE is the same was sent to create', () => {",
+													"",
+													"    pm.expect(pm.response.json().article.title).to.eql(pm.variables.get(\"ArticleTitle\"));",
+													"    pm.expect(pm.response.json().article.body).to.eql(pm.variables.get(\"ArticleBody\"));",
+													"    ",
+													"})",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"// create a new user ",
+													"const user = {",
+													"    \"email\": `APItestEmail+${Date.now()}@test.test`,",
+													"    \"password\": `APItestPassword${Date.now()}`,",
+													"    \"username\": `APItestUsername+${Date.now()}`,",
+													"};",
+													"",
+													"const RegisterNewUserIfNeeded = {",
+													"  url: 'https://api.realworld.io/api/users',",
+													"  method: 'POST',",
+													"  header: {",
+													"    'Content-Type': 'application/json',",
+													"  },",
+													"  body: {",
+													"    mode: 'raw',",
+													"    raw: JSON.stringify({user})",
+													"    }",
+													"};",
+													"",
+													"pm.sendRequest(RegisterNewUserIfNeeded, function (err, response) { ",
+													"     pm.collectionVariables.set(\"AuthToken\", response.json().user.token)",
+													"});",
+													"// data for article",
+													"const article = {",
+													"    \"title\": \"Fossil Find Your Way to Love: Dino Talk for Dates\",",
+													"    \"description\": \"Dinosaurs a turn-off? Not a chance! Dazzle your date with these prehistoric conversation starters\",",
+													"    \"body\": \"**Did you know the T-Rex's arms were tiny?** (Fun fact + opens the door for dino discussion) **What's your favorite dinosaur movie?** (Playful & reveals shared interests) **I imagine velociraptors were surprisingly clever...** (Shows curiosity &sparks debate)\",",
+													"    \"tags\": 'dino'",
+													"}",
+													"    pm.variables.set('ArticleTitle',article.title);",
+													"    pm.variables.set('ArticleDescription', article.description);",
+													"    pm.variables.set('ArticleBody', article.body);",
+													"    pm.variables.set('ArticleTags', \"\");",
+													"",
+													"",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "X-Requested-With",
+												"value": "XMLHttpRequest"
+											},
+											{
+												"key": "Authorization",
+												"value": "Token {{AuthToken}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"article\": {\n        \"title\": \"{{ArticleTitle}}\",\n        \"description\": \"{{ArticleDescription}}\",\n        \"body\": \"{{ArticleBody}}\",\n        \"tagList\": [\"{{ArticleTags}}\"]\n    }\n}"
+										},
+										"url": {
+											"raw": "{{apiURL}}/articles",
+											"host": [
+												"{{apiURL}}"
+											],
+											"path": [
+												"articles"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Create Article : 201 successful",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set(\"article-slug\", pm.response.json().article.slug)",
+											"",
+											"pm.test(' Status code is 201', () => {",
+											"    pm.response.to.have.status(201);",
+											"})",
+											"",
+											"pm.test('Response is JSON object', () => {",
+											"     pm.expect(pm.response.json()).to.be.an('object')",
+											"})",
+											"",
+											"pm.test('Response contains article properties', () => {",
+											"",
+											"    pm.expect(pm.response.json()).to.have.property('article');",
+											"    pm.expect(pm.response.json().article).to.have.property('slug');",
+											"    pm.expect(pm.response.json().article).to.have.property('title');",
+											"    pm.expect(pm.response.json().article).to.have.property('description');",
+											"    pm.expect(pm.response.json().article).to.have.property('body');",
+											"    pm.expect(pm.response.json().article).to.have.property('tagList');",
+											"    pm.expect(pm.response.json().article).to.have.property('createdAt');",
+											"    pm.expect(pm.response.json().article).to.have.property('updatedAt');",
+											"    pm.expect(pm.response.json().article).to.have.property('author');",
+											"    pm.expect(pm.response.json().article.author).to.have.property('username');",
+											"    pm.expect(pm.response.json().article.author).to.have.property('bio');",
+											"    pm.expect(pm.response.json().article.author).to.have.property('image');",
+											"    pm.expect(pm.response.json().article.author).to.have.property('following');",
+											"",
+											"})",
+											"",
+											"pm.test('The article returned by BE is the same was sent to create', () => {",
+											"",
+											"    pm.expect(pm.response.json().article.title).to.eql(pm.variables.get(\"ArticleTitle\"));",
+											"    pm.expect(pm.response.json().article.body).to.eql(pm.variables.get(\"ArticleBody\"));",
+											"",
+											"})",
+											"",
+											"//delete article after the test",
+											"// const url = pm.collectionVariables.get(\"apiURL\");",
+											"// const slug = pm.collectionVariables.get(\"article-slug\");",
+											"// const token = pm.collectionVariables.get(\"AuthToken\");",
+											"",
+											"// const DeleteArticle = {",
+											"//   url: `${url}/articles/${slug}`,",
+											"//   method: 'DELETE',",
+											"//   header: {",
+											"//     'Authorization': `Token ${token}`,",
+											"//     'Content-Type': 'application/json'",
+											"//   }",
+											"// };",
+											"",
+											"// pm.sendRequest(DeleteArticle, function (err, response) {",
+											"//     //console.log(response.json());",
+											"// });"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const user = {",
+											"    \"email\": `APItestEmail+${Date.now()}@test.test`,",
+											"    \"password\": `APItestPassword${Date.now()}`,",
+											"    \"username\": `APItestUsername+${Date.now()}`,",
+											"};",
+											"",
+											"const article = {",
+											"    \"title\": \"Fossil Find Your Way to Love: Dino Talk for Dates\",",
+											"    \"description\": \"Dinosaurs a turn-off? Not a chance! Dazzle your date with these prehistoric conversation starters\",",
+											"    \"body\": \"**Did you know the T-Rex's arms were tiny?** (Fun fact + opens the door for dino discussion) **What's your favorite dinosaur movie?** (Playful & reveals shared interests) **I imagine velociraptors were surprisingly clever...** (Shows curiosity &sparks debate)\",",
+											"    \"tags\": 'dino'",
+											"}",
+											"pm.variables.set('ArticleTitle', article.title);",
+											"pm.variables.set('ArticleDescription', article.description);",
+											"pm.variables.set('ArticleBody', article.body);",
+											"pm.variables.set('ArticleTags', article.tags);",
+											"",
+											"",
+											"const RegisterNewUserIfNeeded = {",
+											"  url: 'https://api.realworld.io/api/users',",
+											"  method: 'POST',",
+											"  header: {",
+											"    'Content-Type': 'application/json',",
+											"  },",
+											"  body: {",
+											"    mode: 'raw',",
+											"    raw: JSON.stringify({user})",
+											"    }",
+											"};",
+											"",
+											"pm.sendRequest(RegisterNewUserIfNeeded, function (err, response) { ",
+											"     pm.collectionVariables.set(\"AuthToken\", response.json().user.token);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "X-Requested-With",
+										"value": "XMLHttpRequest"
+									},
+									{
+										"key": "Authorization",
+										"value": "Token {{AuthToken}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"article\": {\n        \"title\": \"{{ArticleTitle}}\",\n        \"description\": \"{{ArticleDescription}}\",\n        \"body\": \"{{ArticleBody}}\",\n        \"tagList\": [\"{{ArticleTags}}\"]\n    }\n}"
+								},
+								"url": {
+									"raw": "{{apiURL}}/articles",
+									"host": [
+										"{{apiURL}}"
+									],
+									"path": [
+										"articles"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Article : 401 Unauthorized",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(' Status code is 401', () => {",
+											"    pm.response.to.have.status(401);",
+											"})",
+											"",
+											"pm.test('Response is JSON object', () => {",
+											"     pm.expect(pm.response.json()).to.be.an('object')",
+											"})",
+											"",
+											"pm.test('Response contains status:error', () => {",
+											"    pm.expect(pm.response.json()).to.have.property('status');",
+											"    pm.expect(pm.response.json().status).to.equal('error');",
+											"});",
+											"",
+											"pm.test(`Response contains error description`, () => {",
+											"    pm.expect(pm.response.json()).to.have.property(\"message\");",
+											"    pm.expect(pm.response.json().message).to.equal(`missing authorization credentials`);",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const article = {",
+											"    \"title\": \"Fossil Find Your Way to Love: Dino Talk for Dates\",",
+											"    \"description\": \"Dinosaurs a turn-off? Not a chance! Dazzle your date with these prehistoric conversation starters\",",
+											"    \"body\": \"**Did you know the T-Rex's arms were tiny?** (Fun fact + opens the door for dino discussion) **What's your favorite dinosaur movie?** (Playful & reveals shared interests) **I imagine velociraptors were surprisingly clever...** (Shows curiosity &sparks debate)\",",
+											"    \"tags\": 'dino'",
+											"}",
+											"pm.variables.set('ArticleTitle', article.title);",
+											"pm.variables.set('ArticleDescription', article.description);",
+											"pm.variables.set('ArticleBody', article.body);",
+											"pm.variables.set('ArticleTags', article.tags);",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "X-Requested-With",
+										"value": "XMLHttpRequest"
+									},
+									{
+										"key": "Authorization",
+										"value": ""
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"article\": {\n        \"title\": \"{{ArticleTitle}}\",\n        \"description\": \"{{ArticleDescription}}\",\n        \"body\": \"{{ArticleBody}}\",\n        \"tagList\": [\"{{ArticleTags}}\"]\n    }\n}"
+								},
+								"url": {
+									"raw": "{{apiURL}}/articles",
+									"host": [
+										"{{apiURL}}"
+									],
+									"path": [
+										"articles"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "GET /article",
+					"item": [
+						{
+							"name": "GET all articles (global feed): 200",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", () => {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test('Response is JSON object', () => {",
+											"     pm.expect(pm.response.json()).to.be.an('object')",
+											"})",
+											"",
+											"pm.test('Response contains article properties', () => {",
+											"",
+											"    pm.expect(pm.response.json()).to.have.property('articles');",
+											"    pm.expect(pm.response.json().articles.length).to.be.eq(10);",
+											"    pm.expect(pm.response.json()).to.have.property('articlesCount');",
+											"})",
+											"",
+											"pm.test(\"Each article has required properties\",  () => {",
+											"  const data = pm.response.json();",
+											"  data.articles.forEach(article => {",
+											"    pm.expect(article).to.have.all.keys([",
+											"      \"slug\",",
+											"      \"title\",",
+											"      \"description\",",
+											"      \"body\",",
+											"      \"tagList\",",
+											"      \"createdAt\",",
+											"      \"updatedAt\",",
+											"      \"favorited\",",
+											"      \"favoritesCount\",",
+											"      \"author\"",
+											"    ]);",
+											"  });",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "X-Requested-With",
+										"value": "XMLHttpRequest"
+									},
+									{
+										"key": "",
+										"value": "",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{apiURL}}/articles",
+									"host": [
+										"{{apiURL}}"
+									],
+									"path": [
+										"articles"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET Your feed authorized: 200",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", () => {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test('Response is JSON object', () => {",
+											"     pm.expect(pm.response.json()).to.be.an('object')",
+											"})",
+											"",
+											"pm.test('Response contains article properties', () => {",
+											"",
+											"    pm.expect(pm.response.json()).to.have.property('articles');",
+											"    pm.expect(pm.response.json().articles.length).to.be.eq(pm.response.json().articlesCount);",
+											"    pm.expect(pm.response.json()).to.have.property('articlesCount');",
+											"})",
+											"",
+											"pm.test(\"Each article has required properties\",  () => {",
+											"  const data = pm.response.json();",
+											"  data.articles.forEach(article => {",
+											"    pm.expect(article).to.have.all.keys([",
+											"      \"slug\",",
+											"      \"title\",",
+											"      \"description\",",
+											"      \"body\",",
+											"      \"tagList\",",
+											"      \"createdAt\",",
+											"      \"updatedAt\",",
+											"      \"favorited\",",
+											"      \"favoritesCount\",",
+											"      \"author\"",
+											"    ]);",
+											"  });",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"packages": {},
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "X-Requested-With",
+										"value": "XMLHttpRequest"
+									},
+									{
+										"key": "Authorization",
+										"value": "Token {{AuthToken}}"
+									}
+								],
+								"url": {
+									"raw": "{{apiURL}}/articles/feed",
+									"host": [
+										"{{apiURL}}"
+									],
+									"path": [
+										"articles",
+										"feed"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET Your feed unauthorized: 401",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 401\", () => {",
+											"    pm.response.to.have.status(401);",
+											"});",
+											"",
+											"pm.test('Response is JSON object', () => {",
+											"     pm.expect(pm.response.json()).to.be.an('object')",
+											"})",
+											"",
+											"pm.test('Response contains status:error', () => {",
+											"    pm.expect(pm.response.json()).to.have.property('status');",
+											"    pm.expect(pm.response.json().status).to.equal('error');",
+											"});",
+											"",
+											"pm.test(`Response contains error description`, () => {",
+											"    pm.expect(pm.response.json()).to.have.property(\"message\");",
+											"    pm.expect(pm.response.json().message).to.equal(`missing authorization credentials`);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "X-Requested-With",
+										"value": "XMLHttpRequest"
+									}
+								],
+								"url": {
+									"raw": "{{apiURL}}/articles/feed",
+									"host": [
+										"{{apiURL}}"
+									],
+									"path": [
+										"articles",
+										"feed"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET Article by slug: 200 successful",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\",  () => {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test('Response contains article properties', () => {",
+											"",
+											"    pm.expect(pm.response.json()).to.have.property('article');",
+											"    pm.expect(pm.response.json().article).to.have.property('slug');",
+											"    pm.expect(pm.response.json().article).to.have.property('title');",
+											"    pm.expect(pm.response.json().article).to.have.property('description');",
+											"    pm.expect(pm.response.json().article).to.have.property('body');",
+											"    pm.expect(pm.response.json().article).to.have.property('tagList');",
+											"    pm.expect(pm.response.json().article).to.have.property('createdAt');",
+											"    pm.expect(pm.response.json().article).to.have.property('updatedAt');",
+											"    pm.expect(pm.response.json().article).to.have.property('author');",
+											"    pm.expect(pm.response.json().article.author).to.have.property('username');",
+											"    pm.expect(pm.response.json().article.author).to.have.property('bio');",
+											"    pm.expect(pm.response.json().article.author).to.have.property('image');",
+											"    pm.expect(pm.response.json().article.author).to.have.property('following');",
+											"",
+											"})",
+											"",
+											"pm.test('The article returned by BE is the same was sent to create', () => {",
+											"",
+											"    pm.expect(pm.response.json().article.slug).to.eql(pm.variables.get(\"article-slug\"));",
+											"",
+											"})"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const article = {",
+											"    \"title\": `Fossil Find Your Way to Love: Dino Talk for Dates ${Date.now()}`,",
+											"    \"description\": \"Dinosaurs a turn-off? Not a chance! Dazzle your date with these prehistoric conversation starters\",",
+											"    \"body\": \"**Did you know the T-Rex's arms were tiny?** (Fun fact + opens the door for dino discussion) **What's your favorite dinosaur movie?** (Playful & reveals shared interests) **I imagine velociraptors were surprisingly clever...** (Shows curiosity &sparks debate)\",",
+											"    \"tagList\": 'dino'",
+											"}",
+											"",
+											"const PostNewArticle = {",
+											"  url: 'https://api.realworld.io/api/articles',",
+											"  method: 'POST',",
+											"  header: {",
+											"    'Content-Type': 'application/json',",
+											"    'Authorization': 'Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjozOTAwNX0sImlhdCI6MTcyMDEwODk3MSwiZXhwIjoxNzI1MjkyOTcxfQ.6oF1JfzfW5r0n9oPvzbRHtutnJGCWa4SPdC8P8DkUwQ'",
+											"  },",
+											"  body: {",
+											"    mode: 'raw',",
+											"    raw: JSON.stringify({article})",
+											"    }",
+											"};",
+											"",
+											"pm.sendRequest(PostNewArticle, function (err, response) { ",
+											"     pm.collectionVariables.set(\"article-slug\", response.json().article.slug);",
+											"     console.log(response);",
+											"     console.log(response.json().article.slug)",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "X-Requested-With",
+										"value": "XMLHttpRequest"
+									},
+									{
+										"key": "Authorization",
+										"value": "Token {{AuthToken}}"
+									}
+								],
+								"url": {
+									"raw": "{{apiURL}}/articles/{{article-slug}}",
+									"host": [
+										"{{apiURL}}"
+									],
+									"path": [
+										"articles",
+										"{{article-slug}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET Article by slug: 404",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 404\",  () => {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"pm.test('Response is JSON object', () => {",
+											"     pm.expect(pm.response.json()).to.be.an('object')",
+											"})",
+											"",
+											"pm.test('Response contains errors property', () => {",
+											"    pm.expect(pm.response.json()).to.have.property('errors')",
+											"})",
+											"",
+											"pm.test(`Response contains error description`, () => {",
+											"    pm.expect(pm.response.json().errors).to.have.property(\"article\");",
+											"    pm.expect(pm.response.json().errors.article[0]).to.equal(\"not found\");",
+											"    });"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set('article-slug', 'je-je-je');"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "X-Requested-With",
+										"value": "XMLHttpRequest"
+									}
+								],
+								"url": {
+									"raw": "{{apiURL}}/articles/{{article-slug}}",
+									"host": [
+										"{{apiURL}}"
+									],
+									"path": [
+										"articles",
+										"{{article-slug}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "apiURL",
+			"value": "https://api.realworld.io/api",
+			"type": "string"
+		},
+		{
+			"key": "AuthToken",
+			"value": ""
+		},
+		{
+			"key": "article-slug",
+			"value": ""
+		},
+		{
+			"key": "ArticleContent",
+			"value": ""
+		}
+	]
+}
